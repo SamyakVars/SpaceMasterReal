@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class drawwithmouse : MonoBehaviour
+public class DrawWithMouse : MonoBehaviour
 {
-    private LineRenderer line;
+    public LineRenderer line { get; private set; }
     private Vector3 previousPosition;
 
-    [SerializeField]
-    private float minDistance = 0.1f;
-    [SerializeField]
-    private float width;
+    [SerializeField] private float minDistance = 0.1f;
+    [SerializeField] private float width;
+    public bool canDraw { get; private set; } = false;
 
     private void Start()
     {
@@ -18,11 +17,12 @@ public class drawwithmouse : MonoBehaviour
         line.positionCount = 1;
         previousPosition = transform.position;
 
+        line.SetWidth(width, width);
     }
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && canDraw)
         {
             Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             currentPosition.z = 0f;
@@ -36,28 +36,30 @@ public class drawwithmouse : MonoBehaviour
                 }
                 else
                 {
-
                     line.positionCount++;
                     line.SetPosition(line.positionCount - 1, currentPosition);
-
-
                 }
-
                 previousPosition = currentPosition;
-
-
             }
         }
 
-        if (Input.GetMouseButtonUp(0))
+        
+    }
+
+    public void enableDrawing(bool returnValue)
+    {
+        switch (returnValue)
         {
-            line.positionCount = 1;
-            previousPosition = transform.position;
-
+            case true: canDraw=true; break;
+            case false: canDraw=false;  break;
         }
+    }
 
-
-
+    public void resetLine()
+    {
+        line.positionCount = 1;
+        line.SetPosition(0, transform.position);
+        previousPosition = transform.position;
     }
 
 }
