@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DrawWithMouse : MonoBehaviour
@@ -27,6 +28,8 @@ public class DrawWithMouse : MonoBehaviour
             Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             currentPosition.z = 0f;
 
+            line.enabled = true;
+
 
             if (Vector3.Distance(currentPosition, previousPosition) > minDistance)
             {
@@ -42,8 +45,17 @@ public class DrawWithMouse : MonoBehaviour
                 previousPosition = currentPosition;
             }
         }
-
-        
+        if (line.positionCount >= 2)
+        {
+            if (IsLineOnePoint())
+            {
+                line.enabled = false;
+            }
+            else
+            {
+                line.enabled = true;
+            }
+        }
     }
 
     public void enableDrawing(bool returnValue)
@@ -60,6 +72,13 @@ public class DrawWithMouse : MonoBehaviour
         line.positionCount = 1;
         line.SetPosition(0, transform.position);
         previousPosition = transform.position;
+        line.enabled = false;
     }
 
+    bool IsLineOnePoint()
+    {
+        Vector3 position0 = line.GetPosition(0);
+        Vector3 position1 = line.GetPosition(1);
+        return position0 == position1;
+    }
 }
