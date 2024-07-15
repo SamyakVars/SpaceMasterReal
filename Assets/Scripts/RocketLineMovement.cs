@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class RocketLineMovement : MonoBehaviour
 {
@@ -66,5 +67,15 @@ public class RocketLineMovement : MonoBehaviour
                 }
             }
         }
+
+        // Rotation, maar maakt t helemaal buggy. Help ik weet niet meer wat er gebeurd.
+        Vector2 targetRotate = line.GetPosition(0);
+        Vector2 position2D = new Vector2(transform.position.x, transform.position.y);
+
+        Vector2 rotateDirection = targetRotate - position2D;
+
+        float rotateAngle = Mathf.Atan2(rotateDirection.y, rotateDirection.x) * Mathf.Rad2Deg;
+
+        transform.rotation = Quaternion.Euler(0, 0, rotateAngle);
     }
 }
