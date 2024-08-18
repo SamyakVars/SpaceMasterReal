@@ -7,9 +7,9 @@ using static UnityEngine.GraphicsBuffer;
 public class RocketLineMovement : MonoBehaviour
 {
 
-    private DrawWithMouse drawWithMouse;
-    private BoxCollider2D boxCollider;
-    private LineRenderer line;
+    [SerializeField] private DrawWithMouse drawWithMouse;
+    public BoxCollider2D boxCollider;
+    [SerializeField] private LineRenderer line;
 
     public bool lineDrawn = false;
 
@@ -19,12 +19,7 @@ public class RocketLineMovement : MonoBehaviour
 
     void Start()
     {
-        drawWithMouse = GetComponentInChildren<DrawWithMouse>();
         drawWithMouse.enableDrawing(false);
-
-        boxCollider = GetComponent<BoxCollider2D>();
-
-        line = drawWithMouse.gameObject.GetComponent<LineRenderer>();
     }
 
     void Update()
@@ -74,8 +69,10 @@ public class RocketLineMovement : MonoBehaviour
 
         Vector2 rotateDirection = targetRotate - position2D;
 
-        float rotateAngle = Mathf.Atan2(rotateDirection.y, rotateDirection.x) * Mathf.Rad2Deg;
+        float rotateAngle = Mathf.Atan2(rotateDirection.y, rotateDirection.x) * Mathf.Rad2Deg - 90;
 
         transform.rotation = Quaternion.Euler(0, 0, rotateAngle);
+
+
     }
 }
